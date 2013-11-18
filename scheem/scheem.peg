@@ -1,0 +1,15 @@
+start =
+    expression
+
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+atom =
+    chars:validchar+
+        { return chars.join(""); }
+
+expression =
+  atom
+/ '(' first:expression rest:(' ' expression)* ')'
+    { return [first].concat(rest.map(function(item) {return item[1];})); }
+
