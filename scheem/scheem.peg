@@ -8,8 +8,15 @@ atom =
     chars:validchar+
         { return chars.join(""); }
 
-expression =
-  atom
-/ '(' first:expression rest:(' ' expression)* ')'
-    { return [first].concat(rest.map(function(item) {return item[1];})); }
+quote =
+    "'" expr:expression {return ['quote', expr];}
 
+
+expression =
+  sep* atom:atom sep* {return atom;}
+/ sep* quote:quote sep* {return quote;}
+/ sep* '(' first:expression rest:expression* ')' sep*
+    { return [first].concat(rest); }
+
+sep =
+  [ \t\r\n]
