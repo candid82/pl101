@@ -18,5 +18,8 @@ expression =
 / sep* '(' first:expression rest:expression* ')' sep*
     { return [first].concat(rest); }
 
+whitespace = [ \t\r\n]
+comment = ';;' [^\n]* [\n]?
+
 sep =
-  [ \t\r\n]
+  whitespace / comment
